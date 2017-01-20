@@ -15,8 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.grgbanking.demo.common.photo.AlbumActivity;
-import com.grgbanking.demo.common.util.PermissionUtils;
 import com.grgbanking.demo.login.LoginActivity;
 import com.grgbanking.demo.main.activity.first_workorder_activity;
 import com.grgbanking.demo.DemoCache;

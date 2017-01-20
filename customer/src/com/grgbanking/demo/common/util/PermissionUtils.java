@@ -39,8 +39,8 @@ public class PermissionUtils {
     public static final int CODE_READ_EXTERNAL_STORAGE = 7;
     public static final int CODE_WRITE_EXTERNAL_STORAGE = 8;
 
-    public static final int CODE_CAMERA_2 = 11;
-    public static final int CODE_READ_EXTERNAL_STORAGE_2 = 12;
+    public static final int CODE_CALL_PHONE_2 = 11;
+
     public static final int CODE_MULTI_PERMISSION = 100;
 
     public static final String PERMISSION_RECORD_AUDIO = Manifest.permission.RECORD_AUDIO;
