@@ -164,7 +164,7 @@
     <string name="record_audio_end">松开  结束</string>
     <string name="sdcard_not_exist_error">请插入SD卡</string>
     <string name="recording_error">录音失败，请重试</string>
-    <string name="recording_init_failed">请到设置中开启录音权限</string>
+    <string name="recording_init_failed">初始化录音失败</string>
     <string name="recording_cancel">手指上滑 取消发送</string>
     <string name="timer_default">00:00</string>
     <string name="recording_cancel_tip">松开手指，取消发送</string>

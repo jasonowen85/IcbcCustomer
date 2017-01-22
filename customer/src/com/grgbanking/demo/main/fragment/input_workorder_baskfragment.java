@@ -161,6 +161,8 @@ public class input_workorder_baskfragment extends BaseFragment implements
                 if (ret_code.equals("0")) {
                     JSONObject jsonObject = response.optJSONObject("lists");
                     JSONArray jsonArr = jsonObject.optJSONArray("lists");
+                    int totalItem = jsonObject.optInt("total");
+                    int totalPager = totalItem/10;
                     List<workOrder> orders = new ArrayList<workOrder>();
                     for (int i = 0; i < jsonArr.length(); i++) {
                         workOrder order = new workOrder();
@@ -205,7 +207,12 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         datas.addAll(orders);
                         listView1.onLoadComplete();
                     }
-                    listView1.setResultSize(orders.size());
+
+                    if(totalPager == currentPage){
+                        listView1.setNoNextPagerDatas();
+                    } else {
+                        listView1.setResultSize(orders.size());
+                    }
                     mListAdapt.notifyDataSetChanged();
                     orders.clear();
                 } else {
@@ -455,6 +462,11 @@ public class input_workorder_baskfragment extends BaseFragment implements
             vHolder.tv_number.setText(datas.get(position).getDeviceNum());
             vHolder.tv_createTime.setText(datas.get(position).getCreateTime());
 
+            if (datas.get(position).getImageUrls().size() == 0) {
+                vHolder.img1.setImageResource(R.drawable.nim_default_img_failed);
+                vHolder.img2.setImageResource(R.drawable.nim_default_img_failed);
+                vHolder.img3.setImageResource(R.drawable.nim_default_img_failed);
+            }
             if (datas.get(position).getImageUrls().size() > 2) {
                 if (Util.isOnMainThread()) {
                     Glide.with(input_workorder_baskfragment.this)
@@ -466,6 +478,10 @@ public class input_workorder_baskfragment extends BaseFragment implements
             }
             if (datas.get(position).getImageUrls().size() > 1) {
                 if (Util.isOnMainThread()) {
+
+                    if(datas.get(position).getImageUrls().size() == 2){
+                        vHolder.img3.setImageResource(R.drawable.nim_default_img_failed);
+                    }
                     Glide.with(input_workorder_baskfragment.this)
                             .load(String.format(ApiHttpClient.API_URL_IMG, ImageUtils.getThumbnail(datas.get(position).getImageUrls().get(1))))
                             .crossFade()
@@ -475,6 +491,10 @@ public class input_workorder_baskfragment extends BaseFragment implements
             }
             if (datas.get(position).getImageUrls().size() > 0) {
                 if (Util.isOnMainThread()) {
+                    if(datas.get(position).getImageUrls().size() == 1){
+                        vHolder.img3.setImageResource(R.drawable.nim_default_img_failed);
+                        vHolder.img2.setImageResource(R.drawable.nim_default_img_failed);
+                    }
                     Glide.with(input_workorder_baskfragment.this)
                             .load(String.format(ApiHttpClient.API_URL_IMG, ImageUtils.getThumbnail(datas.get(position).getImageUrls().get(0))))
                             .crossFade()
