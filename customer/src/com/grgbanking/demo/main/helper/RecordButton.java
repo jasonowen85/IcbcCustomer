@@ -3,10 +3,12 @@ package com.grgbanking.demo.main.helper;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -175,13 +177,21 @@ public class RecordButton extends RelativeLayout implements PermissionResult {
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     if (Build.VERSION.SDK_INT >= 23) {
-                        //如果没有录音权限。。。Toast
-                        ActivityCompat.requestPermissions(mActivity,
-                                new String[]{PermissionUtils.PERMISSION_RECORD_AUDIO}, PermissionUtils.CODE_RECORD_AUDIO);
+                        String[] needPermissions = new String[]{PermissionUtils.PERMISSION_RECORD_AUDIO, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE};
+                        if(PermissionUtils.lacksPermissions(mActivity, needPermissions)){
+                            if(PermissionUtils.lacksPermission(mActivity, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE)){
+                                ActivityCompat.requestPermissions(mActivity,needPermissions, PermissionUtils.CODE_RECORD_AUDIO);
+                            } else {
+                                ActivityCompat.requestPermissions(mActivity,
+                                        new String[]{PermissionUtils.PERMISSION_RECORD_AUDIO}, PermissionUtils.CODE_RECORD_AUDIO);
+                            }
+                        } else {
+                            startRecordAudio();
+                        }
+
                     } else {
                         startRecordAudio();
                     }
-
                 }else if(event.getAction() == MotionEvent.ACTION_MOVE){
                     LogUtil.e("qzc","ACTION_MOVE"+x+"---y="+y+"--"+mImgPlay.getWidth()+"---"+mImgPlay.getHeight());
 

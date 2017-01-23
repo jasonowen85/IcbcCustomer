@@ -356,12 +356,28 @@ public class Addwork_order_Activity extends UI implements View.OnClickListener {
         switch(permsRequestCode) {
             case PermissionUtils.CODE_RECORD_AUDIO:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if(mBtnRecort != null)
-                        mBtnRecort.requestPermissionAudio();
+
+                    if(ContextCompat.checkSelfPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED){
+                        PermissionUtils.confirmActivityPermission(this, new String[]{PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE},
+                                PermissionUtils.CODE_RECORD_AUDIO, getString(R.string.readSDcard), false);
+                    } else {
+                        if(mBtnRecort != null)
+                            mBtnRecort.requestPermissionAudio();
+                    }
+
                 } else {
-                    PermissionUtils.confirmActivityPermission(this, new String[]{PermissionUtils.PERMISSION_RECORD_AUDIO},
-                            PermissionUtils.CODE_RECORD_AUDIO, getString(R.string.recordAudio), false);
+                    if (ContextCompat.checkSelfPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_DENIED) {
+                        //重新申请 sd 录音权限
+                        PermissionUtils.confirmActivityPermission(this, permissions, PermissionUtils.CODE_RECORD_AUDIO, getString(R.string.recordAudio), false);
+                    } else {
+                        //只申请  录音权限
+                        PermissionUtils.confirmActivityPermission(this, new String[]{PermissionUtils.PERMISSION_RECORD_AUDIO},
+                                PermissionUtils.CODE_RECORD_AUDIO, getString(R.string.recordAudio), false);
+                    }
                 }
+
                 break;
             case PermissionUtils.CODE_READ_EXTERNAL_STORAGE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
