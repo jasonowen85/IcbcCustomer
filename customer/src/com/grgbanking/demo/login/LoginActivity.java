@@ -51,6 +51,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,7 +99,17 @@ public class LoginActivity extends UI implements OnKeyListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
         if (Build.VERSION.SDK_INT >= 23) {
-            PermissionUtils.requestMultiPermissions(this, mPermissionGrant);
+            if(PermissionUtils.lacksPermissions(this, PermissionUtils.requestPermissions)){
+                List<String> requestPermission = new ArrayList<String>();
+                for(String permission : PermissionUtils.requestPermissions){
+                    if(PermissionUtils.lacksPermission(this, permission)){
+                        requestPermission.add(permission);
+                    }
+                }
+                ActivityCompat.requestPermissions(this,
+                        requestPermission.toArray(new String[requestPermission.size()]), 1001); // 请求权限
+                requestPermission.clear();
+            }
         }
         ToolBarOptions options = new ToolBarOptions();
         options.isNeedNavigate = false;
@@ -136,42 +147,7 @@ public class LoginActivity extends UI implements OnKeyListener {
     }
 
 
-    private PermissionUtils.PermissionGrant mPermissionGrant = new PermissionUtils.PermissionGrant() {
-        @Override
-        public void onPermissionGranted(int requestCode) {
-            switch (requestCode) {
-                case PermissionUtils.CODE_RECORD_AUDIO:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_RECORD_AUDIO", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_GET_ACCOUNTS:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_GET_ACCOUNTS", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_READ_PHONE_STATE:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_READ_PHONE_STATE", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_CALL_PHONE:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_CALL_PHONE", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_CAMERA:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_CAMERA", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_ACCESS_FINE_LOCATION:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_ACCESS_FINE_LOCATION", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_ACCESS_COARSE_LOCATION:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_ACCESS_COARSE_LOCATION", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_READ_EXTERNAL_STORAGE:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_READ_EXTERNAL_STORAGE", Toast.LENGTH_SHORT).show();
-                    break;
-                case PermissionUtils.CODE_WRITE_EXTERNAL_STORAGE:
-                    Toast.makeText(LoginActivity.this, "Result Permission Grant CODE_WRITE_EXTERNAL_STORAGE", Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
+
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
 //        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) { // 按下的如果是BACK，同时没有重复

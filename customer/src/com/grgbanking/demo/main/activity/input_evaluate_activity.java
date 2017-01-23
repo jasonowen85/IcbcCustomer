@@ -134,17 +134,21 @@ public class input_evaluate_activity extends UI implements View.OnClickListener 
         phoneIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Build.VERSION.SDK_INT >= 23) {
-                    //打电话权限；
-                    if(ContextCompat.checkSelfPermission(input_evaluate_activity.this, PermissionUtils.PERMISSION_CALL_PHONE) ==
-                            PackageManager.PERMISSION_DENIED){
-                        ActivityCompat.requestPermissions(input_evaluate_activity.this,
-                                new String[]{PermissionUtils.PERMISSION_CALL_PHONE}, PermissionUtils.CODE_CALL_PHONE);
+                if(supUserPhone!=null){
+                    if (Build.VERSION.SDK_INT >= 23) {
+                        //打电话权限；
+                        if(ContextCompat.checkSelfPermission(input_evaluate_activity.this, PermissionUtils.PERMISSION_CALL_PHONE) ==
+                                PackageManager.PERMISSION_DENIED){
+                            ActivityCompat.requestPermissions(input_evaluate_activity.this,
+                                    new String[]{PermissionUtils.PERMISSION_CALL_PHONE}, PermissionUtils.CODE_CALL_PHONE);
+                        } else {
+                            callPhone(supUserPhone);
+                        }
                     } else {
                         callPhone(supUserPhone);
                     }
-                } else {
-                    callPhone(supUserPhone);
+                }else{
+                    Toast.makeText(mContext, "获取工程师信息失败", Toast.LENGTH_SHORT).show();
                 }
 
 

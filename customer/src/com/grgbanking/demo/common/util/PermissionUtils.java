@@ -11,6 +11,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.widget.Toast;
@@ -54,7 +55,7 @@ public class PermissionUtils {
     public static final String PERMISSION_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
     public static final String PERMISSION_WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
-    private static final String[] requestPermissions = {
+    public static final String[] requestPermissions = {
             PERMISSION_RECORD_AUDIO,
 //            PERMISSION_GET_ACCOUNTS,
             PERMISSION_READ_PHONE_STATE,
@@ -125,6 +126,20 @@ public class PermissionUtils {
             Toast.makeText(activity, "opened:" + requestPermissions[requestCode], Toast.LENGTH_SHORT).show();
             permissionGrant.onPermissionGranted(requestCode);
         }
+    }
+    // 判断权限集合
+    public static boolean lacksPermissions(Activity activity, String... permissions) {
+        for (String permission : permissions) {
+            if (lacksPermission(activity ,permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    // 判断是否缺少权限
+    public static boolean lacksPermission(Activity activity, String permission) {
+        return ContextCompat.checkSelfPermission(activity, permission) ==
+                PackageManager.PERMISSION_DENIED;
     }
 
     private static void requestMultiResult(Activity activity, String[] permissions, int[] grantResults, PermissionGrant permissionGrant) {
