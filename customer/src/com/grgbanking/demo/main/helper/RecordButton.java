@@ -107,20 +107,20 @@ public class RecordButton extends RelativeLayout implements PermissionResult {
 //            initBorderLine();
 //            break;
 //        case MotionEvent.ACTION_MOVE:
-////            if (event.getY() < 0) {
-////                viewToInit();
-////                break;
-////            }
-////            if (event.getX() > mRightButtonX) {
-////                mIsCancel = true;
-////                scaleView(mImgDelete, 1.5f);
-////            } else if (event.getX() < mLeftButtonX) {
-////                mIsCancel = true;
-////                scaleView(mImgListen, 1.5f);
-////            } else {
-////                mIsCancel = false;
-////                viewToInit();
-////            }
+//            if (event.getY() < 0) {
+//                viewToInit();
+//                break;
+//            }
+//            if (event.getX() > mRightButtonX) {
+//                mIsCancel = true;
+//                scaleView(mImgDelete, 1.5f);
+//            } else if (event.getX() < mLeftButtonX) {
+//                mIsCancel = true;
+//                scaleView(mImgListen, 1.5f);
+//            } else {
+//                mIsCancel = false;
+//                viewToInit();
+//            }
 //            break;
 //        case MotionEvent.ACTION_UP:
 //            if (mIsCancel || event.getY() < -50) {
@@ -460,7 +460,7 @@ public class RecordButton extends RelativeLayout implements PermissionResult {
      */
     @Override
     public void requestPermissionAudio() {
-        startRecordAudio();
+//        startRecordAudio();
     }
 
     @Override
