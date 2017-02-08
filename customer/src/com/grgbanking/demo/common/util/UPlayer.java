@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.netease.nim.uikit.common.util.log.LogUtil;
+
 public class UPlayer implements IVoiceManager, MediaPlayer.OnCompletionListener,
         MediaPlayer.OnPreparedListener, MediaPlayer.OnErrorListener {
 
@@ -69,6 +71,7 @@ public class UPlayer implements IVoiceManager, MediaPlayer.OnCompletionListener,
 
     @Override
     public boolean stop() {
+        LogUtil.i("jiang", "录音停止播放");
         mPlayer.reset();
 //        mPlayer.stop();
 //        mPlayer.release();

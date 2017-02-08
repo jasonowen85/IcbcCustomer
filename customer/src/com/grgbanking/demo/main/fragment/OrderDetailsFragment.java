@@ -297,6 +297,7 @@ public class OrderDetailsFragment extends Fragment {
                                 if (msg.what == 0) {
                                     startAnim();
                                 } else if (msg.what == 1) {
+                                    player.stop();
                                     if (drawable != null) {
                                         drawable.stop();
                                         details_ImgVolume.setBackgroundResource(R.drawable.icon_record);
@@ -320,7 +321,7 @@ public class OrderDetailsFragment extends Fragment {
                     details_ImgVolume.setBackgroundResource(R.drawable.icon_record);
                     details_ImgVolume.setBackgroundResource(R.drawable.audio_animations);
                 }
-//            player = null;
+//                player = null;
             }else {
                 player.start(file.getPath());
                 startAnim();
