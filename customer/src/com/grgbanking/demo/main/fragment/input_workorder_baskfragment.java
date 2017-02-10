@@ -31,6 +31,7 @@ import com.grgbanking.demo.main.activity.input_courier_number_activity;
 import com.grgbanking.demo.main.activity.input_evaluate_activity;
 import com.grgbanking.demo.main.activity.input_order_details_activity;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 
 import org.apache.http.Header;
@@ -154,6 +155,11 @@ public class input_workorder_baskfragment extends BaseFragment implements
     }
 
     protected void getData(final int what) {
+        if(what == ListViewCompat.REFRESH  && currentPage != 1){
+            //如果刷新数据 currentPage  = 1;
+            currentPage =1;
+        }
+
         ServerApi.jobOrderList(Preferences.getUserid(), currentPage, 10, mType, Return(NimApplication.lastDeviceTypeId), Return(NimApplication.lastSupplierId), Return(NimApplication.lastStarttime), Return(NimApplication.lastEndtime), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -162,7 +168,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                     JSONObject jsonObject = response.optJSONObject("lists");
                     JSONArray jsonArr = jsonObject.optJSONArray("lists");
                     int totalItem = jsonObject.optInt("total");
-                    int totalPager = totalItem/10;
+                    int totalPager = totalItem%10 == 0 ? totalItem/10 : totalItem/10 + 1  ;// totalItem/10;
                     List<workOrder> orders = new ArrayList<workOrder>();
                     for (int i = 0; i < jsonArr.length(); i++) {
                         workOrder order = new workOrder();
@@ -203,14 +209,17 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         datas.addAll(orders);
                         listView1.onRefreshComplete();
                     } else if (ListViewCompat.LOAD == what) {
-                        currentPage++;
                         datas.addAll(orders);
                         listView1.onLoadComplete();
                     }
-
+                    LogUtil.i("jiang", "当前请求页 = " + currentPage + "总datas size=" + datas.size() +
+                            "   总totalItem = " + totalItem + "  本次请求获取到的数据条数= " + orders.size() + "  总页数= " + totalPager);
                     if(totalPager == currentPage){
                         listView1.setNoNextPagerDatas();
                     } else {
+                        if(totalPager > 1){
+                            currentPage++;
+                        }
                         listView1.setResultSize(orders.size());
                     }
                     mListAdapt.notifyDataSetChanged();
@@ -467,6 +476,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                 vHolder.img2.setImageResource(R.drawable.nim_default_img_failed);
                 vHolder.img3.setImageResource(R.drawable.nim_default_img_failed);
             }
+
             if (datas.get(position).getImageUrls().size() > 2) {
                 if (Util.isOnMainThread()) {
                     Glide.with(input_workorder_baskfragment.this)
