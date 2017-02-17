@@ -34,6 +34,7 @@ public class WorkorderAction extends BaseAction {
     @Override
     public void onClick() {
         //TODO fengtangquan 参数传递
+        LogUtil.e(TAG, "新报修 账号为： " + getAccount()) ;
         ServerApi.getUserInfo(getAccount(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -20,6 +20,9 @@ import android.widget.TextView;
 import com.grgbanking.demo.R;
 import com.grgbanking.demo.common.dialog.DialogHelper;
 import com.grgbanking.demo.common.dialog.WaitDialog;
+import com.grgbanking.demo.common.util.PermissionUtils;
+import com.grgbanking.demo.login.LoginActivity;
+import com.grgbanking.demo.login.LogoutHelper;
 import com.netease.nim.uikit.common.fragment.TFragment;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.sys.ReflectionUtil;
@@ -66,6 +69,17 @@ public abstract class UI extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //判断是否有sd权限 否则不让登陆
+        if (Build.VERSION.SDK_INT >= 23) {
+            LogUtil.ui("activity: onResume" + this.getClass().getSimpleName());
+            if (PermissionUtils.lacksPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE)
+                    && !LoginActivity.class.getSimpleName().equals(this.getClass().getSimpleName())) {
+//                LogoutHelper.logout();
+                // 启动登录
+                this.finish();
+                LoginActivity.start(this);
+            }
+        }
     }
 
     @Override
