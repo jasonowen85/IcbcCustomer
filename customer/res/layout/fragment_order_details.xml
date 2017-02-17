@@ -566,7 +566,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:gravity="right|center_vertical"
+                    android:gravity="center_vertical"
                     android:paddingRight="15dp"
                     android:text="快递公司"
                     android:textSize="@dimen/text_size_14" />
@@ -600,7 +600,7 @@
                 <TextView
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:gravity="left|center_vertical"
+                    android:gravity="center_vertical"
                     android:paddingRight="15dp"
                     android:text="快递单号"
                     android:textSize="@dimen/text_size_14" />
