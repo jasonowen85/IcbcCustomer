@@ -184,14 +184,14 @@ public class LoginActivity extends UI implements OnKeyListener {
     @Override
     protected void onResume() {
         super.onResume();
-        //判断是否有sd权限 否则不让登陆
+        //判断是否有sd权i限 否则不让登陆i
         boolean b = ActivityCompat.shouldShowRequestPermissionRationale(this
                 , PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE );
-        Log.e("jiang", "onResume" + "运行  222" + b  + " isshowdialog = " + isShowDialog);
+        Log.i("jiang", "onResume" + "运行  222" + b  + " isshowdialog = " + isShowDialog);
         if(!isShowDialog && Build.VERSION.SDK_INT >= 23 && !b && PermissionUtils.lacksPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE)){
             //弹出对话框 授权;
             showDialogPermission();
-            Log.e("jiang", "onResume" + "在手授权");
+            Log.i("jiang", "onResume" + "在手授权");
         }
 
     }
