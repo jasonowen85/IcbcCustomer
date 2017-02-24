@@ -188,7 +188,7 @@ public class LoginActivity extends UI implements OnKeyListener {
         boolean b = ActivityCompat.shouldShowRequestPermissionRationale(this
                 , PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE );
         Log.e("jiang", "onResume" + "运行  222" + b  + " isshowdialog = " + isShowDialog);
-        if(!isShowDialog && !b && PermissionUtils.lacksPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE)){
+        if(!isShowDialog && Build.VERSION.SDK_INT >= 23 && !b && PermissionUtils.lacksPermission(this, PermissionUtils.PERMISSION_WRITE_EXTERNAL_STORAGE)){
             //弹出对话框 授权;
             showDialogPermission();
             Log.e("jiang", "onResume" + "在手授权");
@@ -206,14 +206,14 @@ public class LoginActivity extends UI implements OnKeyListener {
 //    }
     private  void showDialogPermission() {
         isShowDialog = true;
-        Log.e("jianglu", "马上显示dialog");
+        Log.i("jianglu", "马上显示dialog");
         EasyAlertDialogHelper.createOkCancelDiolag(this, getString(R.string.helps),
                 getString(R.string.readSDcard) + getString(R.string.string_help_text),
                 getString(R.string.settings), getString(R.string.quit_apk), true, new EasyAlertDialogHelper.OnDialogActionListener() {
                     @Override
                     public void doCancelAction() {
                         //返回上一个界面;
-                        Log.e("jianglu", "马上返回上一个界面 退出应用了");
+                        Log.i("jianglu", "马上返回上一个界面 退出应用了");
                         isShowDialog = false;
                         finish();
                     }

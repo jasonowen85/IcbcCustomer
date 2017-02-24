@@ -70,7 +70,7 @@ public class OrderDetailsFragment extends Fragment {
     private ImageView star1, star2, star3, star4, star5;
     private workOrder mWorkOrder;
     private LinearLayout ll_express, ll_evaluate, ll_complete,ll_contact_address;
-    private TextView tv_complete, tv_line, tv_contact_phone, tv_therepair_name, tv_contact_address, tv_express, tv_courierNum, tv_evaluate;
+    private TextView tv_complete, tv_line, tv_contact_phone, tv_therepair_name, tv_contact_address, tv_express, tv_courierNum, tv_evaluate, tv_buttomLine;
     private int mOrderType = 0;//1 上门维修   2 寄件返修
     //计算得到图片的间距 单位dp
     private final  int PaddingIndance = 56;
@@ -115,6 +115,7 @@ public class OrderDetailsFragment extends Fragment {
         ll_evaluate = (LinearLayout) view.findViewById(R.id.ll_evaluate);
         tv_evaluate = (TextView) view.findViewById(R.id.tv_evaluate);
         tv_complete = (TextView) view.findViewById(R.id.tv_complete);
+
         //tv_fault_condition = (TextView) view.findViewById(R.id.tv_fault_condition);//故障情况
         tv_therepair_name = (TextView) view.findViewById(R.id.tv_therepair_name);//维修人
         tv_contact_phone = (TextView) view.findViewById(R.id.tv_contact_phone);//维修人电话
@@ -687,9 +688,9 @@ public class OrderDetailsFragment extends Fragment {
                         //EventBus.getDefault().post(new EventLatLng(mWorkOrder,arrs,voiceUrl));
                         tv_therepair_name.setText(jsonObj.getString("userName"));
                         tv_contact_phone.setText(jsonObj.getString("phone"));
-                        String schedule = jsonObj.getString("schedule");
+//                        String schedule = jsonObj.getString("schedule");
                         String state = jsonObj.getString("state");
-                        setButtons( schedule);
+//                        setButtons( schedule);
                         //getTrackingData();
                     } catch (JSONException e) {
                         e.printStackTrace();

@@ -31,6 +31,7 @@ import com.grgbanking.demo.main.activity.input_courier_number_activity;
 import com.grgbanking.demo.main.activity.input_evaluate_activity;
 import com.grgbanking.demo.main.activity.input_order_details_activity;
 import com.loopj.android.http.JsonHttpResponseHandler;
+import com.netease.nim.uikit.common.ui.dialog.EasyAlertDialogHelper;
 import com.netease.nim.uikit.common.util.log.LogUtil;
 import com.netease.nim.uikit.common.util.string.StringUtil;
 
@@ -168,7 +169,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                     JSONObject jsonObject = response.optJSONObject("lists");
                     JSONArray jsonArr = jsonObject.optJSONArray("lists");
                     int totalItem = jsonObject.optInt("total");
-                    int totalPager = totalItem%10 == 0 ? totalItem/10 : totalItem/10 + 1  ;// totalItem/10;
+                    int totalPager = totalItem % 10 == 0 ? totalItem / 10 : totalItem / 10 + 1;// totalItem/10;
                     List<workOrder> orders = new ArrayList<workOrder>();
                     for (int i = 0; i < jsonArr.length(); i++) {
                         workOrder order = new workOrder();
@@ -214,10 +215,10 @@ public class input_workorder_baskfragment extends BaseFragment implements
                     }
                     LogUtil.i("jiang", "当前请求页 = " + currentPage + "总datas size=" + datas.size() +
                             "   总totalItem = " + totalItem + "  本次请求获取到的数据条数= " + orders.size() + "  总页数= " + totalPager);
-                    if(totalPager == currentPage){
+                    if (totalPager == currentPage) {
                         listView1.setNoNextPagerDatas();
                     } else {
-                        if(totalPager > 1){
+                        if (totalPager > 1) {
                             currentPage++;
                         }
                         listView1.setResultSize(orders.size());
@@ -255,9 +256,26 @@ public class input_workorder_baskfragment extends BaseFragment implements
         });
     }
 
-    /* 2.2.7.确认收货*/
-    protected void comfirmOrder(String jobOrder_id) {
-        ServerApi.comfirmOrder(jobOrder_id, Preferences.getUserid(), new JsonHttpResponseHandler() {
+//    protected void confirmReceivedGoodsDialog(final String orderId, String message, String positiveMessage) {
+//        EasyAlertDialogHelper.createOkCancelDiolag(this.getContext(),getString(R.string.helps), message,
+//                positiveMessage, getString(R.string.cancel), true, new EasyAlertDialogHelper.OnDialogActionListener() {
+//                    @Override
+//                    public void doCancelAction() {
+//                        //什么都不干
+//                    }
+//
+//                    @Override
+//                    public void doOkAction() {
+//                        confirmReceivedGoods(orderId);
+//                    }
+//                }).show();
+//    }
+
+    /**确认收货
+     * @param orderId
+     */
+    protected void confirmReceivedGoods(String orderId) {
+        ServerApi.comfirmOrder(orderId, Preferences.getUserid(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 String ret_code = response.optString("ret_code");
@@ -340,8 +358,28 @@ public class input_workorder_baskfragment extends BaseFragment implements
             }
         });
     }
+    /**撤单确认dialog
+     * @param orderid
+     */
+    protected void confirmCancelOrder(final String orderid) {
+        Activity activity = getActivity();
+        EasyAlertDialogHelper.createOkCancelDiolag(activity, activity.getString(R.string.helps), activity.getString(R.string.confirm_cancle_order),
+                activity.getString(R.string.cancle_order), activity.getString(R.string.cancel), true, new EasyAlertDialogHelper.OnDialogActionListener() {
+                    @Override
+                    public void doCancelAction() {
+                        //什么都不干
+                    }
 
-    /*撤单*/
+                    @Override
+                    public void doOkAction() {
+                        cancelOrder(orderid);
+                    }
+                }).show();
+    }
+
+    /**撤单
+     * @param orderid
+     */
     protected void cancelOrder(String orderid) {
         ServerApi.cancelOrder(orderid, new JsonHttpResponseHandler() {
             @Override
@@ -530,7 +568,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cancelOrder(datas.get(position).getId());
+                                confirmCancelOrder(datas.get(position).getId());
                             }
                         });
                         vHolder.iv_action2.setOnClickListener(new View.OnClickListener() {
@@ -548,7 +586,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cancelOrder(datas.get(position).getId());
+                                confirmCancelOrder(datas.get(position).getId());
                             }
                         });
                     } else {
@@ -565,7 +603,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action2.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                comfirmOrder(datas.get(position).getId());
+                                confirmReceivedGoods(datas.get(position).getId());
                             }
                         });
                     } else if (datas.get(position).getSchedule().equals("7")) { //--- 确认完成，
@@ -576,7 +614,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                comfirmOrder(datas.get(position).getId());
+                                confirmReceivedGoods(datas.get(position).getId());
                             }
                         });
                     } else if (datas.get(position).getSchedule().equals("5")) { //--- 撤单
@@ -587,7 +625,7 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cancelOrder(datas.get(position).getId());
+                                confirmCancelOrder(datas.get(position).getId());
                             }
                         });
                     } else if (datas.get(position).getSchedule().equals("13")) {
@@ -606,7 +644,19 @@ public class input_workorder_baskfragment extends BaseFragment implements
                         vHolder.iv_action1.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                closedOrder(datas.get(position).getId());
+                                EasyAlertDialogHelper.createOkCancelDiolag(mContext, mContext.getString(R.string.helps), mContext.getString(R.string.confirm_close_order),
+                                        mContext.getString(R.string.close_order),mContext.getString(R.string.cancel), true, new EasyAlertDialogHelper.OnDialogActionListener() {
+                                            @Override
+                                            public void doCancelAction() {
+                                                //什么都不干
+                                            }
+
+                                            @Override
+                                            public void doOkAction() {
+                                                closedOrder(datas.get(position).getId());
+                                            }
+                                        }).show();
+
                             }
                         });
                         vHolder.iv_action2.setOnClickListener(new View.OnClickListener() {
