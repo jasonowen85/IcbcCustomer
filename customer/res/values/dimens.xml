@@ -102,6 +102,7 @@
     <dimen name="margin_1dp">1dp</dimen>
     <dimen name="margin_6dp">6dp</dimen>
     <dimen name="margin_10dp">10dp</dimen>
+    <dimen name="margin_12dp">12dp</dimen>
     <dimen name="margin_15dp">15dp</dimen>
     <dimen name="margin_20dp">20dp</dimen>
     <dimen name="margin_60dp">60dp</dimen>

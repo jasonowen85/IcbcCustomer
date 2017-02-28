@@ -95,6 +95,8 @@
 
     <color name="color_hint_73be36">#73be36</color>
     <color name="color_hint_e0e0e0">#e0e0e0</color>
+    <color name="text_color_addorder_time">#B7B7B7</color>
+    <color name="view_color_divide">#F3F2F2</color>
 
 
 </resources>
